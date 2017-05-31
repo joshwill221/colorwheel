@@ -1,4 +1,4 @@
-var game = new Phaser.Game(window.innerWidth * window.devicePixelRatio, window.innerHeight * window.devicePixelRatio, Phaser.AUTO, 'gameArea', { preload: preload, create: create, update: update });
+var game = new Phaser.Game(400, 600, Phaser.AUTO, 'gameArea', { preload: preload, create: create, update: update });
 
 //400 x 600
 
@@ -25,7 +25,7 @@ function create() {
     
     /* Setup */
     // Inconsistent scaling: either doesn't work or doesn't load at all
-    //Phaser.ScaleManager.SHOW_ALL;
+    Phaser.ScaleManager.SHOW_ALL;
     
     // Change the background color of the game to blue
     game.stage.backgroundColor = '#71c5cf';
