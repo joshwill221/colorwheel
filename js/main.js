@@ -1,4 +1,6 @@
-var game = new Phaser.Game(400, 600, Phaser.AUTO, 'gameArea', { preload: preload, create: create, update: update });
+var game = new Phaser.Game(window.innerWidth * window.devicePixelRatio, window.innerHeight * window.devicePixelRatio, Phaser.AUTO, 'gameArea', { preload: preload, create: create, update: update });
+
+//400 x 600
 
 function preload() {
     // Load sprites
@@ -23,6 +25,8 @@ function create() {
     
     /* Setup */
     
+    game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+    
     // Change the background color of the game to blue
     game.stage.backgroundColor = '#71c5cf';
     
@@ -41,7 +45,7 @@ function create() {
     /* Wheel */
     
     // Display the wheel at the position x=100 and y=245
-    wheel = game.add.sprite(game.world.width/2, 480, 'wheel');
+    wheel = game.add.sprite(game.world.width/2, game.world.height-120, 'wheel');
 
     // Make sure the wheel won't move when it hits the ball
     wheel.body.immovable = true;
@@ -59,7 +63,7 @@ function create() {
     
     /* Lives */
     lives = 3;
-    labelLives = game.add.text(290, 20, "lives: 3", { font: "30px Arial", fill: "#ffffff" });
+    labelLives = game.add.text(game.world.width-150, 20, "lives: 3", { font: "30px Arial", fill: "#ffffff" });
     
     p = game.input.activePointer;
 }
