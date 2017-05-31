@@ -25,7 +25,7 @@ function create() {
     
     /* Setup */
     // Inconsistent scaling: either doesn't work or doesn't load at all
-    Phaser.ScaleManager.SHOW_ALL;
+    // Phaser.ScaleManager.SHOW_ALL;
     
     // Change the background color of the game to blue
     game.stage.backgroundColor = '#71c5cf';
