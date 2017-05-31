@@ -24,8 +24,7 @@ var down;
 function create() {
     
     /* Setup */
-    
-    game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+    Phaser.ScaleManager.SHOW_ALL;
     
     // Change the background color of the game to blue
     game.stage.backgroundColor = '#71c5cf';
