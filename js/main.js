@@ -1,4 +1,4 @@
-var game = new Phaser.Game(414, 736, Phaser.AUTO, 'gameArea', { preload: preload, create: create, update: update });
+var game = new Phaser.Game(400, 600, Phaser.AUTO, 'gameArea', { preload: preload, create: create, update: update });
 
 //400 x 600
 
@@ -19,7 +19,6 @@ var labelScore;
 var lives;
 var labelLives;
 var p;
-var down;
 
 function create() {
     
@@ -59,7 +58,7 @@ function create() {
     /* Wheel */
     
     // Display the wheel at the position x=100 and y=245
-    wheel = game.add.sprite(game.world.width/2, game.world.height-180, 'wheel');
+    wheel = game.add.sprite(game.world.width/2, game.world.height-150, 'wheel');
 
     // Make sure the wheel won't move when it hits the ball
     wheel.body.immovable = true;
@@ -82,7 +81,7 @@ function create() {
     
     /* Lives */
     lives = 3;
-    labelLives = game.add.text(game.world.width-150, 20, "lives: 3", { font: "30px Arial", fill: "#ffffff" });
+    labelLives = game.add.text(game.world.width-115, 20, "lives: 3", { font: "30px Arial", fill: "#ffffff" });
 }
 
 function update() {    
