@@ -1,4 +1,4 @@
-var game = new Phaser.Game(400, 600, Phaser.AUTO, 'gameArea', { preload: preload, create: create, update: update });
+var game = new Phaser.Game(414, 736, Phaser.AUTO, 'gameArea', { preload: preload, create: create, update: update });
 
 //400 x 600
 
@@ -24,8 +24,22 @@ var down;
 function create() {
     
     /* Setup */
-    // Inconsistent scaling: either doesn't work or doesn't load at all
-    // Phaser.ScaleManager.SHOW_ALL;
+    
+    // If this is not a desktop (so it's a mobile device)
+    if (game.device.desktop == false) {
+        // Set the scaling mode to SHOW_ALL to show all the game
+        game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+
+        // Set a minimum and maximum size for the game
+        // Here the minimum is half the game size
+        // And the maximum is the original game size
+        game.scale.setMinMax(game.width/2, game.height/2, game.width, game.height);
+
+        // Center the game horizontally and vertically
+        game.scale.pageAlignHorizontally = true;
+        // game.scale.pageAlignVertically = true;
+
+    }
     
     // Change the background color of the game to blue
     game.stage.backgroundColor = '#71c5cf';
@@ -39,22 +53,27 @@ function create() {
     
     /* Ball */
         
-    createBall(game.world.width/2 - 25, 25);
+    createBall(game.world.width/2 - 25, 0);
     
     
     /* Wheel */
     
     // Display the wheel at the position x=100 and y=245
-    wheel = game.add.sprite(game.world.width/2, game.world.height-120, 'wheel');
+    wheel = game.add.sprite(game.world.width/2, game.world.height-180, 'wheel');
 
     // Make sure the wheel won't move when it hits the ball
     wheel.body.immovable = true;
     
-    // Move the anchor to the right and downward
+    // Move the anchor to the center
     wheel.anchor.setTo(0.5, 0.5);
     
-    // Controls
+    /* Controls */
+    
+    // Set arrow keys
     cursors = game.input.keyboard.createCursorKeys();
+    
+    // Set pointer for click dragging
+    p = game.input.activePointer;
     
     
     /* Score */
@@ -64,8 +83,6 @@ function create() {
     /* Lives */
     lives = 3;
     labelLives = game.add.text(game.world.width-150, 20, "lives: 3", { font: "30px Arial", fill: "#ffffff" });
-    
-    p = game.input.activePointer;
 }
 
 function update() {    
@@ -86,9 +103,9 @@ function update() {
     }
     
     /* testing */
-    else if(p.isDown)
+    if(p.isDown)
     {
-        var angle = Phaser.Math.angleBetween(p.x, p.y, wheel.x, wheel.y) + 90;
+        var angle = Phaser.Math.angleBetween(p.x, p.y, wheel.x, wheel.y);
         wheel.rotation = -angle;
     }
 }
@@ -162,7 +179,7 @@ function hit( ball, wheel) {
         }
 
     // Create new ball
-    createBall(game.world.width/2 - 25, 25);
+    createBall(game.world.width/2 - 25, 0);
 }
     
 function createBall(x, y) {
