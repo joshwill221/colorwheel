@@ -46,7 +46,7 @@ var mainState = {
 
         /* Wheel */
 
-        // Display the wheel at the position x=100 and y=245
+        // Display the wheel
         this.wheel = game.add.sprite(game.world.width/2, game.world.height-150, 'wheel');
 
         // Make sure the wheel won't move when it hits the ball
@@ -96,11 +96,13 @@ var mainState = {
             var angle = Phaser.Math.angleBetween(this.p.x, this.p.y, this.wheel.x, this.wheel.y)+80;
             this.wheel.rotation = angle;
         }
+        
+        // Center text on sprite every frame
+        this.ball.text.x = Math.floor(this.ball.x + this.ball.width / 2);
+        this.ball.text.y = Math.floor(this.ball.y + this.ball.height / 2);
     },
     
     hit: function(ball, wheel) {
-        // Removes the ball from the screen
-        ball.kill();
         console.log("hit");
 
         /* Wheel Rotation 0 to 180 and -180 to 0 */
@@ -109,7 +111,7 @@ var mainState = {
         {
             // Yellow
             //console.log("hit yellow" + wheel.angle);
-            if (ball.color == 'yellow')
+            if (ball.labelText == 'yellow')
             {
                 console.log("Correct color, YELLOW")
                 this.score += 1;
@@ -125,7 +127,7 @@ var mainState = {
         {
             // Blue
             //console.log("hit blue" + wheel.angle);
-            if (ball.color == 'blue')
+            if (ball.labelText == 'blue')
             {
                 console.log("Correct color, BLUE")
                 this.score += 1;
@@ -142,7 +144,7 @@ var mainState = {
         {
             // Red
             //console.log("hit red" + wheel.angle);
-            if (ball.color == 'red')
+            if (ball.labelText == 'red')
             {
                 console.log("Correct color, RED")
                 this.score += 1;
@@ -165,39 +167,62 @@ var mainState = {
                 console.log("DEAD!!!");
                 this.restartGame();
             }
+        
+        // Removes the ball from the screen
+        ball.text.kill();
+        ball.kill();
 
         // Create new ball
-        this.createBall(game.world.width/2 - 25, 0);
+        this.createBall(game.world.width/2 - ball.width/2, 0);
     },
     
     createBall: function(x, y) {
     // 0 to 2
-    var random = Math.floor(Math.random() * 3);
+    var randColor = Math.floor(Math.random() * 3);
+    // 0 to 1
+    var randFake = Math.floor(Math.random() * 2);
     
     // Create loop when more colors
-    if (random == 0)
+    if (randColor == 0)
     {
         this.ball = game.add.sprite(x, y, 'ball_blue');
-        this.ball.color = 'blue';
+        this.ball.labelColor = 'blue';
+        if (randFake == 0)
+            this.ball.labelText = 'red';
+        else if (randFake == 1)
+            this.ball.labelText = 'yellow';
     }    
-    else if (random == 1)
+    else if (randColor == 1)
     {
         this.ball = game.add.sprite(x, y, 'ball_red');
-        this.ball.color = 'red';
+        this.ball.labelColor = 'red';
+        if (randFake == 0)
+            this.ball.labelText = 'blue';
+        else if (randFake == 1)
+            this.ball.labelText = 'yellow';
     }
-    else if (random == 2)
+    else if (randColor == 2)
     {
         this.ball = game.add.sprite(x, y, 'ball_yellow');
-        this.ball.color = 'yellow';
+        this.ball.labelColor = 'yellow';
+        if (randFake == 0)
+            this.ball.labelText = 'blue';
+        else if (randFake == 1)
+            this.ball.labelText = 'red';
     }    
-    console.log("COLOR: " + this.ball.color);
+    console.log("COLOR: " + this.ball.labelText);
     
     // Add physics to the ball
     game.physics.arcade.enable(this.ball);
 
     // Add gravity to the ball to make it fall
-    this.ball.body.gravity.y = 300;
+    this.ball.body.gravity.y = 150;
     this.ball.body.collideWorldBounds = true;
+        
+    var style = { font: "20px Arial", fill: this.ball.labelColor, wordWrap: false, align: "center", backgroundColor: "#000000" };
+
+    this.ball.text = game.add.text(0, 0, this.ball.labelText, style);
+    this.ball.text.anchor.set(0.5);
     },
     
     // Restart the game
